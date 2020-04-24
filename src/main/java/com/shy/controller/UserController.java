@@ -1,5 +1,6 @@
 package com.shy.controller;
 
+import com.shy.beans.Account;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -7,7 +8,9 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Author: WeiDongDong
@@ -15,11 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Description  UserController
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/account")
 public class UserController {
 
+    @ResponseBody
     @PostMapping("/login")
-    public String login(){
+    public String login(@RequestBody Account account){
         //获取当前用户的Subject
         Subject subject = SecurityUtils.getSubject();
 
