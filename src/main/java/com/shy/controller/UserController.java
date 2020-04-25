@@ -28,7 +28,7 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
 
         //封装登录信息，生成token
-        UsernamePasswordToken token = new UsernamePasswordToken();
+        UsernamePasswordToken token = new UsernamePasswordToken(account.getAUserName(),account.getAPassword());
         try {
             subject.login(token);
             return null;      //登陆成功

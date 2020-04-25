@@ -51,7 +51,14 @@ spring:
         login-password: admin
         allow: 127.0.0.1
         #deny: 192.168.1.100
+     #springboot启动时自动执行该位置下的SQL脚本
+#    schema:
+#      - classpath:
 
 #整合Mybatis
 mybatis:
-  #type-aliases-package: "com.shy.beans"
+#  configuration:
+#    map-underscore-to-camel-case: true   开启驼峰命名
+#type-aliases-package: "com.shy.beans"
+
+

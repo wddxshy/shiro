@@ -4,8 +4,6 @@ import com.shy.beans.Account;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @Author: WeiDongDong
  * @Date 2020/4/24 18:22
@@ -16,5 +14,5 @@ import java.util.List;
 public interface AccountMapper {
 
     //用户登录查询
-    List<Account> queryAccountByLogin(@Param("Aid") int aid);
+    Account queryAccountByLogin(@Param("Ausername") String username);
 }
