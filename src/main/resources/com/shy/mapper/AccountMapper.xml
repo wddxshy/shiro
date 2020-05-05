@@ -5,4 +5,11 @@
     <select id="queryAccountByLogin" parameterType="string" resultType="com.shy.beans.Account">
         select * from account where Ausername=#{Ausername}
     </select>
+    <update id="updateLoginTime">
+        update account set Alogintime=#{nowTime}
+        where Aid=1
+    </update>
+    <select id="queryAccountByTimeStamp" parameterType="string" resultType="java.sql.Timestamp">
+        select Alogintime from account where Ausername=#{Ausername}
+    </select>
 </mapper>

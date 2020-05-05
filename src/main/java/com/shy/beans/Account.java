@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -15,9 +14,11 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account implements Serializable {
+public class Account{
     private Integer Aid;
-    private String AUserName;
-    private String APassword;
-    private Timestamp ALoginTime;
+    private String Ausername;
+    private String Apassword;
+    private boolean checked;
+    private String captcha;
+    private Timestamp Alogintime;
 }

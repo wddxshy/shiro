@@ -9,7 +9,9 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.shiro.util.ByteSource;
+
+import javax.annotation.Resource;
 
 /**
  * @Author: WeiDongDong
@@ -18,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class UserRealm extends AuthorizingRealm {
 
-    @Autowired
-    private LoginService loginServiceimpl;
+    @Resource
+    private LoginService loginServiceImpl;
+
 
     //权限认证
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+
         return null;
     }
 
@@ -31,10 +35,14 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal();
-        Account account = loginServiceimpl.queryAccountByLogin(username);
+        Account account = loginServiceImpl.queryAccountByLogin(username);
+        System.out.println(account);
         if (account==null){
             return null;
         }
-        return new SimpleAuthenticationInfo("",account.getAPassword(),"");
+        //                                      数据库中的用户名          数据库中的密码                 盐                      自定义realm，通常指代继承AuthorizingRealm的类(当前类)
+        return new SimpleAuthenticationInfo(account.getAusername(),account.getApassword(), ByteSource.Util.bytes(username),this.getName());
     }
+
+
 }

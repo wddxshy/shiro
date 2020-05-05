@@ -1,54 +1,57 @@
 package com.shy.config;
 
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
+import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @Author: WeiDongDong
  * @Date 2020/4/18 21:25
- * @Description  Shiro配置类
+ * @Description Shiro配置类
  */
 @Configuration
 public class ShiroConfig {
 
-    //ShiroFilterFactoryBean
     @Bean
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("WebSecurityManager") DefaultWebSecurityManager DefaultWebSecurityManager){
-        ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
-
-        //设置安全管理器
-        bean.setSecurityManager(DefaultWebSecurityManager);
-
-        //添加shiro的内置过滤器
-        Map<String,String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/user/add","authc");
-        filterMap.put("/user/update","authc");
-        filterMap.put("/user/*","authc");
-        bean.setFilterChainDefinitionMap(filterMap);
-
-        return bean;
-    }
-
-    //DefaultWebSecurityManager
-    @Bean(name="WebSecurityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(UserRealm userRealm){
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-
-        //关联自定义Realm
-        securityManager.setRealm(userRealm);
-        return securityManager;
+    public HashedCredentialsMatcher getHashedCredentialsMatcher() {
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        hashedCredentialsMatcher.setHashAlgorithmName("sha-256");
+        hashedCredentialsMatcher.setHashIterations(10000);
+        return hashedCredentialsMatcher;
     }
 
     //自定义Realm
     @Bean
-    public UserRealm userRealm(){
-        return new UserRealm();
+    public UserRealm userRealm() {
+        UserRealm userRealm = new UserRealm();
+        userRealm.setCredentialsMatcher(getHashedCredentialsMatcher());
+        return userRealm;
     }
+
+    //DefaultWebSecurityManager
+    @Bean
+    public DefaultWebSecurityManager getDefaultWebSecurityManager() {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+
+        //关联自定义Realm
+        securityManager.setRealm(userRealm());
+        return securityManager;
+    }
+
+
+    //替代ShiroFilterFactoryBean
+    @Bean
+    public ShiroFilterChainDefinition getShiroFilterChainDefinition(){
+        DefaultShiroFilterChainDefinition bean = new DefaultShiroFilterChainDefinition();
+        bean.addPathDefinition("/account/**","anon");
+        bean.addPathDefinition("/user/**","authc");
+        bean.addPathDefinition("/**","authc");
+
+        return bean;
+    }
+
 
 }

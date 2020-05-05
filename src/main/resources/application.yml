@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql:///sprirngboot_shiro?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql:///sprirngboot_shiro?serverTimezone=Asia/Shanghai
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
@@ -60,5 +60,11 @@ mybatis:
 #  configuration:
 #    map-underscore-to-camel-case: true   开启驼峰命名
 #type-aliases-package: "com.shy.beans"
+shiro:
+  web:
+    enabled: true
+  successUrl: /account
+  loginUrl: /account/login
+  unauthorizedUrl: /unauthorizedUrl
 
 

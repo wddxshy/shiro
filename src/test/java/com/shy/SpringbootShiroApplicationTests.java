@@ -1,12 +1,10 @@
 package com.shy;
 
-import com.shy.beans.Account;
 import com.shy.mapper.AccountMapper;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 class SpringbootShiroApplicationTests {
@@ -16,8 +14,12 @@ class SpringbootShiroApplicationTests {
 
     @Test
     void contextLoads() {
-        List<Account> accountList = account.queryAccountByLogin(1);
-        accountList.forEach(System.out::println);
+//        List<Account> accountList = account.queryAccountByLogin(1);
+//        accountList.forEach(System.out::println);
+        String username="lisi";
+        String password="456789";
+        SimpleHash simpleHash = new SimpleHash("sha-256",password , username, 10000);
+        System.out.println(simpleHash.toString());
     }
 
 }

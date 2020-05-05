@@ -1,6 +1,9 @@
 package com.shy.service;
 
 import com.shy.beans.Account;
+import org.apache.ibatis.annotations.Param;
+
+import java.sql.Timestamp;
 
 /**
  * @Author: WeiDongDong
@@ -10,4 +13,6 @@ import com.shy.beans.Account;
 public interface LoginService {
 
     Account queryAccountByLogin(String username);
+    void updateLoginTime(Timestamp nowTime);
+    Timestamp queryAccountByTimeStamp(@Param("Ausername") String username);
 }
