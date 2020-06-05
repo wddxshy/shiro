@@ -57,9 +57,11 @@ spring:
 
 #整合Mybatis
 mybatis:
+  type-aliases-package: com.shy.beans
+
 #  configuration:
 #    map-underscore-to-camel-case: true   开启驼峰命名
-#type-aliases-package: "com.shy.beans"
+
 shiro:
   web:
     enabled: true

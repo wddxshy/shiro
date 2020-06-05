@@ -19,6 +19,6 @@ public class Account{
     private String Ausername;
     private String Apassword;
     private boolean checked;
-    private String captcha;
+    private String kaptcha;
     private Timestamp Alogintime;
 }

@@ -42,6 +42,8 @@ public class AccountController {
     @RequestMapping("/login")
     @ResponseBody
     public StateResult login(@RequestBody Account account){
+
+        log.info("用户输入信息  -->"+account.toString());
         //获取当前用户的Subject
         Subject subject = SecurityUtils.getSubject();
 
@@ -55,9 +57,11 @@ public class AccountController {
             log.info(timeStr);
             Timestamp nowTime = Timestamp.valueOf(LocalDateTime.now());
             loginServiceImpl.updateLoginTime(nowTime);
-            Map<String,Object> sessionToken = new HashMap<>();
-            sessionToken.put("SessionId",subject.getSession().getId());
-            return new StateResult(200,"登录成功"+"\t"+"上次登录时间为"+timeStr,sessionToken);      //登陆成功
+            Map<String,Object> date = new HashMap<>();
+            date.put("SessionId",subject.getSession().getId());
+            date.put("AccountId",subject.getPrincipal());
+            log.info("当前登录用户名 -->" + subject.getPrincipal());
+            return new StateResult(200,"登录成功"+"\t"+"上次登录时间为"+timeStr,date);      //登陆成功
         } catch (UnknownAccountException e) {
             e.printStackTrace();
             return new StateResult(701,"用户名不存在");     //账号异常
@@ -72,7 +76,7 @@ public class AccountController {
     @ResponseBody
     public StateResult accountRegister(@RequestBody Account account){
         int i = userServiceImpl.insertAccount(account);
-        log.warn("插入数据，返回结果为："+i);
+        log.info("插入数据，返回结果为："+i);
         return new StateResult(300,"账户创建成功",i);
     }
 
