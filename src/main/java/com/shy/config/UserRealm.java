@@ -2,6 +2,7 @@ package com.shy.config;
 
 import com.shy.beans.Account;
 import com.shy.service.LoginService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
  * @Date 2020/4/19 13:26
  * @Description
  */
+@Slf4j
 public class UserRealm extends AuthorizingRealm {
 
     @Resource
@@ -36,7 +38,7 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal();
         Account account = loginServiceImpl.queryAccountByLogin(username);
-        System.out.println(account);
+        log.info("数据库查询用户信息 -->"+account.toString());
         if (account==null){
             return null;
         }

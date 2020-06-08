@@ -46,6 +46,7 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterChainDefinition getShiroFilterChainDefinition(){
         DefaultShiroFilterChainDefinition bean = new DefaultShiroFilterChainDefinition();
+        bean.addPathDefinition("/verifyImg","anon");
         bean.addPathDefinition("/account/**","anon");
         bean.addPathDefinition("/user/**","authc");
         bean.addPathDefinition("/**","authc");
