@@ -1,9 +1,13 @@
 package com.shy.controller;
 
+import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.shy.beans.Account;
 import com.shy.beans.StateResult;
+import com.shy.config.Kaptcha;
 import com.shy.service.LoginService;
 import com.shy.service.UserService;
+import com.sun.javafx.print.Units;
+import com.sun.xml.internal.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -12,15 +16,18 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import sun.misc.BASE64Encoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @Author: WeiDongDong
@@ -42,6 +49,14 @@ public class AccountController {
     @RequestMapping("/login")
     @ResponseBody
     public StateResult login(@RequestBody Account account){
+        //先判断验证码
+        String lowerCaseStr = account.getCaptcha().toLowerCase();
+        if (!lowerCaseStr.equalsIgnoreCase("从Redis中获取的字符串")) {
+            //TODO        Reids
+            return new StateResult(444,"验证码错误");
+        }
+
+
         //获取当前用户的Subject
         Subject subject = SecurityUtils.getSubject();
 
@@ -81,5 +96,13 @@ public class AccountController {
     public StateResult accountLogout(){
         SecurityUtils.getSubject().logout();
         return new StateResult(201,"账号已登出");
+    }
+
+
+    @GetMapping("/getKaptcha")
+    @ResponseBody
+    public StateResult getKaptcha() {
+
+        return new StateResult(200,"验证码图片",loginServiceImpl.getImag());
     }
 }

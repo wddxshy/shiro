@@ -15,4 +15,5 @@ public interface LoginService {
     Account queryAccountByLogin(String username);
     void updateLoginTime(Timestamp nowTime);
     Timestamp queryAccountByTimeStamp(@Param("Ausername") String username);
+    String getImag();
 }

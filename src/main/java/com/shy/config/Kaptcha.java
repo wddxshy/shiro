@@ -15,7 +15,7 @@ import java.util.Properties;
 @Component
 public class Kaptcha {
     @Bean
-    public DefaultKaptcha getDDefaultKaptcha() {
+    public DefaultKaptcha getDefaultKaptcha() {
         DefaultKaptcha dk = new DefaultKaptcha();
         Properties properties = new Properties();
         // 图片边框
