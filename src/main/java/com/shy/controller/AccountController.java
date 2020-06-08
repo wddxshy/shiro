@@ -50,7 +50,7 @@ public class AccountController {
     @ResponseBody
     public StateResult login(@RequestBody Account account){
         //先判断验证码
-        String lowerCaseStr = account.getCaptcha().toLowerCase();
+        String lowerCaseStr = account.getKaptcha().toLowerCase();
         if (!lowerCaseStr.equalsIgnoreCase("从Redis中获取的字符串")) {
             //TODO        Reids
             return new StateResult(444,"验证码错误");
